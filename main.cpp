@@ -90,7 +90,8 @@ int main()
         delete[] alpha_data[i];
     }
     delete[] alpha_data;
-
-	//std::cout << "I'm heere! " << std::endl;
-	return 0;
+    
+    delete[] betta_data;
+    //std::cout << "I'm heere! " << std::endl;
+    return 0;
 }

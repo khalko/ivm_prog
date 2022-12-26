@@ -27,11 +27,23 @@ matr::matr(int rows, int columns)
 	}
 }
 
-matr::matr(int rows, int columns, double** data)
+matr::matr(int rows, int columns, double** new_data)
 {
 	this->rows = rows;
 	this->columns = columns;
-	this->data = data;
+	data = new double* [rows];
+	for (int i = 0; i < rows; ++i)
+	{
+		data[i] = new double[columns];
+	}
+
+	for (int i = 0; i < rows; ++i)
+	{
+		for (int j = 0; j < columns; ++j)
+		{
+			data[i][j] = new_data[i][j];
+		}
+	}
 }
 
 matr::~matr()
@@ -53,6 +65,7 @@ void matr::print_matr()
 		}
 		std::cout << std::endl;
 	}
+	std::cout << std::endl;
 }
 
 double** matr::get_matr()
@@ -74,13 +87,13 @@ void matr::set_matr(int rows, int columns, double** new_data)
 {
 	this->rows = rows;
 	this->columns = columns;
-//=================== delete old data ==================
+	//=================== delete old data ==================
 	for (int i = 0; i < rows; ++i)
 	{
 		delete[] data[i];
 	}
 	delete[] data;
-//=================== create new_data ==================
+	//=================== create new_data ==================
 	for (int i = 0; i < rows; ++i)
 	{
 		data[i] = new double[columns];
@@ -95,46 +108,69 @@ void matr::set_matr(int rows, int columns, double** new_data)
 	}
 }
 
-/*vect& vect::operator=(const vect& a)
+void matr::create_matr()
 {
+	int a, b;
+	std::cout << "Number of rows: ";
+	std::cin >> a;
+	std::cout << "Number of columns: ";
+	std::cin >> b;
+	//=================== delete old data ==================
+	for (int i = 0; i < rows; ++i)
+	{
+		delete[] data[i];
+	}
+	delete[] data;
+	//=================== create new data ==================
+	rows = a;
+	columns = b;
+	data = new double* [rows];
+	for (int i = 0; i < rows; ++i)
+	{
+		data[i] = new double[columns];
+	}
+
+	for (int i = 0; i < rows; ++i)
+	{
+		for (int j = 0; j < columns; ++j)
+		{
+			std::cout << "Element " << "[" << i+1 << "]" << "[" << j+1 << "] ";
+			std::cin >> data[i][j];
+		}
+	}
+	std::cout << std::endl;
+}
+
+matr& matr::operator=(const matr& a)
+{
+	this->rows = a.rows;
+	this->columns = a.columns;
 	if (this != &a)
 	{
-		for (int i = 0; i < a.size; ++i)
+	//=================== delete old data ==================
+		if (data != nullptr)
 		{
-			this->data[i] = a.data[i];
+			for (int i = 0; i < rows; ++i)
+			{
+				delete[] data[i];
+			}
+			delete[] data;
 		}
-		this->size = a.size;
+	//=================== create new data ==================
+		data = new double* [rows];
+		for (int i = 0; i < rows; ++i)
+		{
+			data[i] = new double[columns];
+		}
+		for (int i = 0; i < a.rows; ++i)
+		{
+			for (int j = 0; j < columns; ++j)
+			{
+				data[i][j] = a.data[i][j];
+			}
+		}
 	}
 	return *this;
 }
 
 
-vect operator+(const vect& a, const vect& b) {
-
-	if (a.size != b.size) {
-		std::cout << "Vectors should be the same dimension";
-		exit(0);
-	}
-	double* data_result = new double[a.size];
-
-	for (int i = 0; i < a.size; ++i) {
-		data_result[i] = a.data[i] + b.data[i];
-	}
-
-	return vect(a.size, data_result);
-}
-
-vect operator-(const vect& a, const vect& b) {
-
-	if (a.size != b.size) {
-		std::cout << "Vectors should be the same dimension";
-		exit(0);
-	}
-	double* data_result = new double[a.size];
-
-	for (int i = 0; i < a.size; ++i) {
-		data_result[i] = a.data[i] - b.data[i];
-	}
-
-	return vect(a.size, data_result);
-}*/
